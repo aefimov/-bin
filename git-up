@@ -1,0 +1,11 @@
+#!/bin/sh
+
+GIT_DIR="$([ -d .git ] && echo .git || git rev-parse --git-dir > /dev/null 2>&1)"
+if [ -z "$GIT_DIR" ]; then
+    exit 1
+fi
+
+GIT_DEFAULT_BRANCH="$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
+git checkout $GIT_DEFAULT_BRANCH
+git pull --rebase --prune
+git branch --format='%(refname:short) %(upstream:track,nobracket)' | grep ' gone$' | cut -d' ' -f1 | xargs -n1 git branch -d
