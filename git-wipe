@@ -5,4 +5,4 @@ if [ -z "$GIT_DIR" ]; then
     exit 1
 fi
 
-git clean --exclude=".idea/" -xffd
+git clean --exclude=".idea/" --exclude=".vscode/" -xffd
