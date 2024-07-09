@@ -1,0 +1,8 @@
+#!/bin/sh
+
+GIT_DIR="$([ -d .git ] && echo .git || git rev-parse --git-dir > /dev/null 2>&1)"
+if [ -z "$GIT_DIR" ]; then
+    exit 1
+fi
+
+git clean --exclude=".idea/" -xffd
