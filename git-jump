@@ -1,0 +1,10 @@
+#!/bin/sh
+
+GIT_DIR="$([ -d .git ] && echo .git || git rev-parse --git-dir > /dev/null 2>&1)"
+if [ -z "$GIT_DIR" ]; then
+    exit 1
+fi
+
+GIT_ORIGIN_DEFAULT_BRANCH="$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/@@')"
+git fetch --prune --prune-tags 2>&1 | grep -v 'rejected' | tail -n +2
+git merge --no-ff $GIT_ORIGIN_DEFAULT_BRANCH
